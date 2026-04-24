@@ -21,33 +21,41 @@
  */
 class Solution {
 public:
-    TreeNode* construct(int start , int end, vector<int> &arr){
+    ListNode* middle(ListNode*head){
+        ListNode*slow = head;
+        ListNode*fast = head;
+        ListNode*prev = nullptr;
         
-        if(start > end){
-            return nullptr;
+        while(fast && fast->next){
+            prev = slow;
+            slow = slow->next;
+            fast = fast->next->next;
         }
 
-        int mid = (start+end)/2;
-        TreeNode*root = new TreeNode(arr[mid]);
-        root->left = construct(start, mid-1, arr);
-        root->right = construct(mid+1,end, arr);
-        return root;
+        if(prev){
+            prev->next = nullptr;
+        }
+
+        return slow;
     }
-
     TreeNode* sortedListToBST(ListNode* head) {
-        vector<int> arr;
-        ListNode*temp = head;
-        
-        while(temp){
-            arr.push_back(temp->val);
-            temp = temp->next;
+
+        if(!head){
+            return NULL;
         }
 
-        int n = arr.size();
-        int start = 0;
-        TreeNode*root1;
-        int end = n-1;
-        root1 = construct(start,end,arr);
-        return root1;
+        
+        ListNode*mid = middle(head);
+        TreeNode*root = new TreeNode(mid->val);
+
+        if(mid == head){
+            return root;
+        }
+
+
+        root->left = sortedListToBST(head);
+        root->right = sortedListToBST(mid->next);
+
+        return root;
     }
 };
