@@ -17,15 +17,15 @@ public:
         ListNode* curr = head;
         ListNode* prev = dummy;
 
-        int group = 0;
+        int group = 1;
 
         while (curr) {
             int count = 0;
             ListNode* temp = curr;
 
             while (temp && count < group) {
-                count++;
                 temp = temp->next;
+                count++;
             }
 
             if (count % 2 == 0) {
